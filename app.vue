@@ -2,17 +2,20 @@
   <div>
     <wrapper>
       <div class="search-row">
-        <search-input v-model="name"/>
+        <search-input v-model.trim="name"/>
       </div>
-      <div class="posts">
-        <s-post v-for="post in filtredPosts" :post="post"/>
+      <div class="wrapper">
+        <div class="posts">
+          <s-post v-for="post in filtredPosts" :post="post"/>
+          <p v-show="filtredPosts?.length==0" class="no-result">Увы, ничего не нашлось. Попробуйте изменить запрос.</p>
+        </div>
       </div>
+
     </wrapper>
   </div>
 </template>
 <script lang="ts" setup>
 import Wrapper from "~/components/wrapper.vue";
-
 
 const name = ref('')
 
@@ -71,12 +74,19 @@ body {
 </style>
 
 <style lang="scss" scoped>
+@import './assets/style/main.scss';
+
 .search-row {
   display: flex;
   width: 100%;
   justify-content: center;
+  position: sticky;
 }
 
+.wrapper {
+  max-height: 92vh;
+  overflow: scroll;
+}
 
 .posts {
   display: flex;
