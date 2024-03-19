@@ -23,7 +23,7 @@ const emit = defineEmits<{
 }
 
 input {
-  padding: 8px 16px 8px 32px;
+  padding: 8px 16px;
   outline: none;
   border: 1px solid $gray-color;
   border-radius: 4px;

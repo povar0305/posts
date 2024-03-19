@@ -80,12 +80,20 @@ body {
 
 .posts {
   display: flex;
-  row-gap: 16px;
+  gap: 16px;
   flex-wrap: wrap;
   justify-content: space-around;
 
   .post {
-    width: 30%;
+    width: 100%;
+
+    @media(min-width: 1024px) {
+      max-width: 30%;
+    }
+    @media(min-width: 768px) {
+      max-width: 40%;
+    }
+
   }
 }
 </style>
