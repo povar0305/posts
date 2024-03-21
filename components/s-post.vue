@@ -2,7 +2,7 @@
 const props = defineProps<{
   post: {
     title: string,
-    author: {},
+    author: string,
     body: string
   }
 }>()
@@ -12,7 +12,7 @@ const props = defineProps<{
   <div class="post">
     <p class="title">{{ post.title }}</p>
     <p>{{ post.body }}</p>
-    <p class="user">{{ post.author[0].name }}</p>
+    <p class="user">{{ post.author }}</p>
   </div>
 </template>
 

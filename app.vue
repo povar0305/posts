@@ -6,7 +6,7 @@
       </div>
       <div class="wrapper">
         <div class="posts">
-          <s-post v-for="post in filtredPosts" :post="post"/>
+          <s-post v-for="post in filtredPosts" :post="post" :key="post.id"/>
           <p v-show="filtredPosts?.length==0" class="no-result">Увы, ничего не нашлось. Попробуйте изменить запрос.</p>
         </div>
       </div>
@@ -16,48 +16,36 @@
 </template>
 <script lang="ts" setup>
 import Wrapper from "~/components/wrapper.vue";
+import axios from "axios";
 
 const name = ref('')
 
 const posts = ref(null)
 
 function getAllPost() {
-  fetch('https://jsonplaceholder.typicode.com/posts')
-      .then(response => response.json())
-      .then(json => posts.value = json)
+
+  axios.get('https://jsonplaceholder.typicode.com/posts')
+      .then(response => {
+        posts.value = response.data;
+        for (let i in posts.value) {
+              axios.get('https://jsonplaceholder.typicode.com/users?id='+posts.value[i].userId)
+              .then(response => {
+                posts.value[i].author= response.data[0].name
+              })
+        }
+      })
 }
 
-getAllPost()
+getAllPost();
 
-
-const users = ref(null)
-
-function getAllUsers() {
-  fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => response.json())
-      .then(json => users.value = json)
-}
-
-getAllUsers();
 
 const filtredPosts = computed(() => {
-  if (posts.value && users.value) {
-    posts.value.map(function (post) {
-      return post.author = users.value?.filter((user) => {
-
-        if (post.userId == user.id)
-          return user.name
-      })
-    })
-  }
-
-
   if (!name.value) {
     return posts.value
   } else {
 
     return posts.value.filter((post) => {
-      return post.author[0].name.includes(name.value)
+      return post.author.includes(name.value)
     })
   }
 })
